@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 
 const App = () => (
   <div>
@@ -10,6 +10,13 @@ const App = () => (
 const Header = () => (
   <header>
     <h1>My Contact</h1>
+    <nav>
+      <ul>
+        <li><Link to='/'>Home</Link></li>
+        <li><Link to='/contacts'>Contact</Link></li>
+      </ul>
+    </nav>
+
     <Route exact path='/welcome' component={Welcome} />
     <Route path='/contacts' component={Contacts} />
   </header>
@@ -17,13 +24,19 @@ const Header = () => (
 
 const Welcome = () => (<h1>Welcome to the best contacts app!!</h1>);
 
-const Contacts = () => (
-  <ul>
-    <li>Hey</li>
-    <li>This</li>
-    <li>Man</li>
+const Contacts = ({ match }) => (
+  <div>
+    <ul>
+      <li><Link to='/contacts/hey'>Hey</Link></li>
+      <li><Link to='/contacts/this'>This</Link></li>
+      <li><Link to='/contacts/man'>Man</Link></li>
+    </ul>
 
-  </ul>
+    <Route exact path={`${match.path}`} render={()=><h3>Please select a contact</h3>} />
+    <Route path={`${match.path}/:contactName`} component={Contact} />
+  </div>
 );
+
+const Contact = ({match}) => `Your friend's name is ${match.params.contactName}`;
 
 export default App;
